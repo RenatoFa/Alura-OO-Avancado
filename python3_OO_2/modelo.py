@@ -1,9 +1,8 @@
-class Programa:  # Classe Pai - Super Classe
-    # Ler sobre o "dunder methods" __init__
+class Programa:
+
     def __init__(self, nome, ano):
         self._nome = nome.title()
-        # _Programa__nome / Problema de deixar o nome privado com __
-        # Por convenção usamos so um _
+
         self.ano = ano
         self._likes = 0
 
@@ -22,21 +21,15 @@ class Programa:  # Classe Pai - Super Classe
     def nome(self, novo_nome):
         self._nome = novo_nome.title()
 
-    # Sobrescrevendo o metodo mãe com dunder methods __str__
-    # Sempre usar o returnx
     def __str__(self):
         return f'{self._nome} - {self.ano} - {self._likes} Likes'
 
 
-class Filme(Programa):  # Classe Filho pegando a informação da classe mãe
-    def __init__(self, nome, ano, duracao):  # to sobrescrevendo a classe init
+class Filme(Programa):
+    def __init__(self, nome, ano, duracao):
         super().__init__(nome, ano)
-        # Estou chamando o inicializador da classe mae,
-        # passando o parametro nome e ano
         self.duracao = duracao
 
-    # Sobrescrevendo o metodo mãe com dunder methods __str__
-    # Sempre usar o return
     def __str__(self):
         return f'{self.nome} - {self.ano} - {self.duracao}min - {self._likes}'
 
@@ -46,8 +39,6 @@ class Serie(Programa):  # Classe Filho
         super().__init__(nome, ano)
         self.temporadas = temporadas
 
-    # Sobrescrevendo o metodo mãe com dunder methods __str__
-    # Sempre usar o return
     def __str__(self):
         return f'{self.nome} - {self.ano} - {self.temporadas}temporadas - {self._likes}'
 
@@ -57,23 +48,11 @@ class Playlist:
         self.nome = nome
         self._programas = programas
 
-    @property
-    def listagem(self):
-        return self._programas
+    def __getitem__(self, item):
+        return self._programas[item]
 
-    @property
-    def tamanho(self):
+    def __len__(self):
         return len(self._programas)
-
-# Herdando o comportamento do list (iteracão da lista)
-# Essa herança tras beneficios e problemas
-# class Playlist(list):
-#     def __init__(self, nome, programas):
-#         self.nome = nome
-#         super().__init__(programas)
-
-    # def tamanho(self):
-    #     return len(self.programas)
 
 
 vingadores = Filme('Vingadores-guerra infinita', 2018, 160)
@@ -94,7 +73,6 @@ atlanta.dar_like()
 atlanta.dar_like()
 
 
-# Polimorfismo (vingadores e atlanta são um programa)
 filmes_e_series = [vingadores, atlanta, demolidor, tmep]
 
 playlist_fim_de_semana = Playlist('fim de semana', filmes_e_series)
@@ -103,13 +81,3 @@ print(f'Tamanho do playlist: {len(playlist_fim_de_semana)}')
 
 for programa in playlist_fim_de_semana:
     print(programa)
-
-    # 1) Primeira vez
-    # hasattr em tempo de execucao verifica qual
-    # objeto está sendo passado
-    # if ternario
-    # detalhes = programa.duracao if hasattr(
-    #     programa, 'duracao') else programa.temporadas
-
-    # print(
-    #     f'{programa.nome} - {detalhes} - {programa.likes}')
